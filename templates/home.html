@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %} {% if not musicians %}
 <h2 class="text-center mt-5 text-warning fw-bold">
-    There is no Data in DataBase! So Please Add Data First
+    There is no Data in DataBase. So Please Add Data First!!!
 </h2>
 {% else %}
 <table class="table table-bordered border-dark mt-3">
@@ -18,7 +18,15 @@
         </tr>
     </thead>
     <tbody>
-        {% for musician in musicians %} {% for album in musician.albums.all %}
+        {% for musician in musicians %} {% if not musician.albums.all %}
+        <tr>
+            <td colspan="8">
+                <h3 class="text-center my-2 text-danger">
+                    No albums have been added here. Please add an album first!!!
+                </h3>
+            </td>
+        </tr>
+        {% else %} {% for album in musician.albums.all %}
         <tr>
             <td>{{ musician.id }}</td>
             <td>
@@ -38,7 +46,7 @@
                 <a href="{% url 'delete_musician'  musician.id %}">Delete</a>
             </td>
         </tr>
-        {% endfor %} {% endfor %}
+        {% endfor %} {% endif %} {% endfor %}
     </tbody>
 </table>
 {% endif %} {% endblock %}
